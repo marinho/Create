@@ -43,6 +43,7 @@ public class TrainHUD {
 	public static Component currentPrompt;
 	public static boolean currentPromptShadow;
 	public static int promptKeepAlive = 0;
+	public static float barSegments = 18f;
 
 	static boolean usedToHonk;
 
@@ -65,7 +66,7 @@ public class TrainHUD {
 			Math.abs(train.speed) / (train.maxSpeed() * AllConfigs.server().trains.manualTrainSpeedModifier.getF());
 		value = Mth.clamp(value + 0.05f, 0, 1);
 
-		displayedSpeed.chase((int) (value * 18) / 18f, .5f, Chaser.EXP);
+		displayedSpeed.chase((int) (value * (int)barSegments) / barSegments, .5f, Chaser.EXP);
 		displayedSpeed.tickChaser();
 		displayedThrottle.chase(editedThrottle != null ? editedThrottle : train.throttle, .75f, Chaser.EXP);
 		displayedThrottle.tickChaser();
@@ -215,7 +216,7 @@ public class TrainHUD {
 			return false;
 
 		double prevThrottle = editedThrottle == null ? carriage.train.throttle : editedThrottle;
-		editedThrottle = Mth.clamp(prevThrottle + (delta > 0 ? 1 : -1) / 18f, 1 / 18f, 1);
+		editedThrottle = Mth.clamp(prevThrottle + (delta > 0 ? 1 : -1) / barSegments, 1 / barSegments, 1);
 		return true;
 	}
 
